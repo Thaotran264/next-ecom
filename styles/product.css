@@ -1,0 +1,38 @@
+.list-product {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+}
+.list-product .card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  /* gap: 10px; */
+  justify-content: center;
+  /* margin: 20px 0; */
+}
+.products .card {
+  margin: 0 auto;
+}
+
+.products .card-img-top {
+  height: 250px;
+  width: 100%;
+}
+
+.products .card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.products .card-text {
+  height: 70px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
