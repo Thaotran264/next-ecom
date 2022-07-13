@@ -1,14 +1,24 @@
 import Image from "next/image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Row, Table } from "react-bootstrap";
 import CartItem from "../components/CartItem";
 import { DataContext } from "../store/globalState";
 
 const Cart = () => {
-  const { state, dispatch } = useContext(DataContext);
+  const { state, dispatch, setShowModal } = useContext(DataContext);
   const { cart } = state;
   const [totals, setTotals] = useState(0);
   const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    const getTotal = () => {
+      const res = cart?.reduce((prev, item) => {
+        return prev + item.Price * item.quantity;
+      }, 0);
+      setTotals(res);
+    };
+    getTotal();
+  }, [cart]);
   if (cart.length == 0)
     return (
       <div className='container mt-2 position-relative d-flex flex-column justify-content-center'>
@@ -25,14 +35,16 @@ const Cart = () => {
   // console.log("dât", data);
   return (
     <div className='container'>
-      <Row>
+      <Row className='p-3'>
         <Col sm={8}>
           <h2>Shopping Cart</h2>
-          <Table className='table my-3'>
+          <hr />
+          <Table className='table my-3' striped bordered hover>
             {/* <thead></thead> */}
             <tbody>
-              {cart.map((item, index) => (
+              {cart?.map((item, index) => (
                 <CartItem
+                  setShowModal={setShowModal}
                   key={index}
                   item={item}
                   dispatch={dispatch}
@@ -42,38 +54,12 @@ const Cart = () => {
             </tbody>
           </Table>
         </Col>
-        <Col></Col>
+        <Col>
+          <h5>
+            Total: <span className='text-danger'>{totals} đ</span>
+          </h5>
+        </Col>
       </Row>
-      {/* <div className='container'>
-        {
-          cart?.map((item, index) => (
-            <div
-              key={index}
-              className='d-flex p-3 border-bottom  border-dark gap-3'
-            >
-              <img
-                src={item.Image || ""}
-                alt=''
-                className='rounded'
-                style={{ objectFit: " cover", width: 150, height: 150 }}
-              />
-              <div>
-                <h5>{item.Name}</h5>
-                <span>{item.Price} d</span>
-                <div className='d-flex gap-2 mt-3'>
-                  <Button onClick={() => setCount(--count)}>-</Button>
-                  <span
-                    style={{ border: "1px solid #fff", padding: "5px 10px" }}
-                  >
-                    {item.quantity}
-                  </span>
-                  <Button onClick={() => setCount(++count)}>+</Button>
-                </div>
-              </div>
-            </div>
-          ))
-        }
-      </div> */}
     </div>
   );
 };

@@ -5,13 +5,13 @@ import {
   useReducer,
   useState,
 } from "react";
-import { addToCart } from "./actions";
 import { reducers } from "./reducer";
 
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-  const initialState = { notify: {}, auth: {}, cart: [] };
+  const [showModal, setShowModal] = useState(false);
+  const initialState = { notify: {}, auth: {}, cart: [], modal: {} };
   const [state, dispatch] = useReducer(reducers, initialState);
   const { cart } = state;
 
@@ -23,11 +23,10 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("cart", cart);
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
   return (
-    <DataContext.Provider value={{ state, dispatch }}>
+    <DataContext.Provider value={{ state, dispatch, showModal, setShowModal }}>
       {children}
     </DataContext.Provider>
   );
