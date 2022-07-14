@@ -1,12 +1,25 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "react-bootstrap";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { BiTrash } from "react-icons/bi";
+import { decrease, increase } from "../store/actions";
 
-const CartItem = ({ item, dispatch, cart }) => {
+const CartItem = ({ item, dispatch, cart, setShowModal }) => {
   console.log(item);
+  const handleDelButton = () => {
+    setShowModal(true);
+    dispatch({
+      type: "ADD_MODAL",
+      payload: {
+        data: cart,
+        id: item.Id,
+        title: item.Name,
+        type: "ADD_CART",
+      },
+    });
+  };
   return (
-    <tr className='d-flex align-center justify-content-between'>
+    <tr className=''>
       <td style={{ width: "100px", overflow: "hidden" }}>
         <img
           src={item.Image}
@@ -15,24 +28,44 @@ const CartItem = ({ item, dispatch, cart }) => {
         />
       </td>
       <td style={{ minWidth: 200 }} className='d-flex align-items-center'>
-        <div className='d-flex flex-column '>
+        <div className=''>
           <h5 className='text-capitalize text-secondary'>
             <Link href=''>
               <a>{item.Name}</a>
             </Link>
           </h5>
-          <h6 className='text-danger'>{item.quantity * item.Price}d</h6>
+          <h6 className='text-danger'>{item.Price} đ</h6>
+        </div>
+      </td>
+      <td className='' style={{ minWidth: 150, cursor: "pointer" }}>
+        <div className=''>
+          <Button
+            variant='outline-secondary'
+            disabled={item.quantity == 1 ? true : false}
+            onClick={() => dispatch(decrease(cart, item.Id))}
+          >
+            -
+          </Button>
+          <span className='px-3'>{item.quantity}</span>
+          <Button
+            variant='outline-secondary'
+            // disabled={item.quantity == 1 ? true : false}
+            onClick={() => dispatch(increase(cart, item.Id))}
+          >
+            +
+          </Button>
         </div>
       </td>
       <td
-        className='d-flex justify-content-center align-items-center'
-        style={{ minWidth: 150, cursor: "pointer" }}
+        style={{ minWidth: 250, cursor: "pointer" }}
+        // className='d-flex align-items-center justify-content-center'
       >
-        <div className='d-flex justify-content-center align-items-center'>
-          <Button variant='outline-primary'>-</Button>
-          <span className='px-3'>{item.quantity}</span>
-          <Button variant='outline-primary'>+</Button>
-        </div>
+        <BiTrash
+          className='text-danger fs-3'
+          data-toggle='modal'
+          data-target='#exampleModal'
+          onClick={handleDelButton}
+        />
       </td>
     </tr>
   );

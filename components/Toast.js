@@ -3,7 +3,6 @@ import { ToastContainer } from "react-bootstrap";
 import Toast from "react-bootstrap/Toast";
 
 const ToastComponent = ({ msg, handleShow, bgColor }) => {
-  const [showA, setShowA] = useState(true);
   return (
     <ToastContainer position='bottom-end' className='p-3'>
       <Toast

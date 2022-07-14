@@ -12,7 +12,9 @@ export default function Home({ datas }) {
       <Head>
         <title>Tastee.vn</title>
       </Head>
-      <Banner />
+      <div className='container'>
+        <Banner />
+      </div>
       <div className='container py-5 border-dark'>
         <div>
           <h3 className='text-center text-warning pb-1 border-bottom border-warning'>
